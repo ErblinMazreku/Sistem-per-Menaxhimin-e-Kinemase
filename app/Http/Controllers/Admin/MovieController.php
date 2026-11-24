@@ -15,5 +15,5 @@ class MovieController extends Controller
     public function edit(Movie $movie) { return view('admin.movies.form', ['movie' => $movie, 'genres' => Genre::orderBy('name')->get()]); }
     public function update(Request $request, Movie $movie) { $movie->update($this->data($request)); return redirect()->route('admin.movies.index')->with('success', 'Movie updated.'); }
     public function destroy(Movie $movie) { abort_if($movie->showtimes()->exists(), 422, 'Remove its showtimes before deleting this movie.'); $movie->delete(); return back()->with('success', 'Movie removed.'); }
-    private function data(Request $request): array { return $request->validate(['genre_id' => ['required', 'exists:genres,id'], 'title' => ['required', 'max:255'], 'description' => ['required'], 'duration_minutes' => ['required', 'integer', 'min:1', 'max:500'], 'age_rating' => ['required', 'max:10'], 'poster_path' => ['nullable', 'url', 'max:1000']]); }
+    private function data(Request $request): array { return $request->validate(['genre_id' => ['required', 'exists:genres,id'], 'title' => ['required', 'max:255'], 'description' => ['required'], 'duration_minutes' => ['required', 'integer', 'min:1', 'max:500'], 'age_rating' => ['required', 'max:10'], 'poster_path' => ['nullable', 'url', 'max:1000'], 'trailer_url' => ['nullable', 'url', 'starts_with:https://', 'max:2048']]); }
 }

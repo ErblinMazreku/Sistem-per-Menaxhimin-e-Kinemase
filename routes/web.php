@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
+
+// Rrugët e reja për TMDb (Vendosen KËTU para /movies/{movie} për të shmangur konfliktet e rrugëve)
+Route::get('/movies/search', [MovieController::class, 'searchTmdb'])->name('movies.search');
+Route::get('/movies/tmdb/{movieId}', [MovieController::class, 'showTmdb'])
+    ->whereNumber('movieId')
+    ->name('movies.show-tmdb');
+
+// Rruga ekzistuese për filmat lokalë
 Route::get('/movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
 
 Route::middleware('guest')->group(function () {
